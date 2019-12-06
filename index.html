@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div id='world'>
+
+    </div>
+    <script>
+        //若第二行为 (、[、+、-或 / 开头时，JavaScript不会自动添加分号
+        var map = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
+            [1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+            [1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1],
+            [1, 2, 2, 2, 1, 1, 4, 1, 1, 2, 2, 2, 1],
+            [1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1],
+            [1, 2, 1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1],
+            [1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        ]
+        var pacmac = {
+            r: 4,
+            l: 6,
+            dir:'right'
+        }
+
+        var world = document.querySelector('#world')
+        draw = () => {
+            var html = ''
+            for (k in map) {
+                for (j in map[k]) {
+                    if (map[k][j] === 1) html += `<div class='wall'></div>`
+                    else if (map[k][j] === 2) html += `<div class='coin'></div>`
+                    else if (map[k][j] === 3) html += `<div class='ground'></div>`
+                    else if (map[k][j] === 4) html += '<div class="pacmac '+pacmac.dir+'"></div>'
+                }
+                html += '<br>'
+            }
+            world.innerHTML = html
+        }
+        draw();
+        document.addEventListener('keydown', (e) => {
+            // console.log(e.key);
+            console.log(e.code);
+            if (e.code === 'ArrowRight') {
+                pacmac.dir='right'
+                if (map[pacmac.r][pacmac.l + 1] !== 1) {
+                    map[pacmac.r][pacmac.l] = 3
+                    pacmac.l += 1
+                    map[pacmac.r][pacmac.l] = 4
+                }
+            } else if (e.code === 'ArrowLeft') {
+                pacmac.dir='left'
+                if (map[pacmac.r][pacmac.l - 1] !== 1) {
+                    map[pacmac.r][pacmac.l] = 3
+                    pacmac.l -= 1
+                    map[pacmac.r][pacmac.l] = 4
+                }
+            } else if (e.code === 'ArrowUp') {
+                pacmac.dir='up'
+                if (map[pacmac.r - 1][pacmac.l] !== 1) {
+                    map[pacmac.r][pacmac.l] = 3
+                    pacmac.r -= 1
+                    map[pacmac.r][pacmac.l] = 4
+                }
+            } else if (e.code === 'ArrowDown') {
+                pacmac.dir='down'
+                if (map[pacmac.r + 1][pacmac.l] !== 1) {
+                    map[pacmac.r][pacmac.l] = 3
+                    pacmac.r += 1
+                    map[pacmac.r][pacmac.l] = 4
+                }
+            }
+            draw();
+        })
+    </script>
+</body>
+
+</html>
